@@ -1,0 +1,19 @@
+{
+    "localhost": {
+        "proxy": "local.domain.com",
+        "tunnel": false,
+        "open": true,
+        "host": "local.domain.com",
+        "port": 3004
+    },
+    "theme": {
+        "name": "_themename",
+        "uri": "_themeuri",
+        "domain": "_themedomain",
+        "prefix": "_themeprefix",
+        "author": "onPoint Studio",
+        "authoruri": "onpoint.studio",
+        "version": "0.0.1",
+        "description": "Starter WordPress theme"
+    }
+}

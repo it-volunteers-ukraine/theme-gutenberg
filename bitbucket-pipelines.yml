@@ -1,0 +1,50 @@
+pipelines:
+  branches:
+    dev:
+      - step:
+          name: Install node dependencies & Build
+          image: node:10.24.1
+          script:
+            - npm install
+            - npm link gulp
+            - npm link @babel/register
+            - npm link @babel/core
+            - npm link @babel/preset-env
+            - npm run build
+          artifacts:
+            - production/**
+      - step:
+         name: Deploy to test stage
+         deployment: staging
+         script:
+           - pipe: atlassian/sftp-deploy:0.5.11
+             variables:
+               USER: $SFTP_USERNAME_DEV
+               PASSWORD: $SFTP_PASSWORD_DEV
+               SERVER: 143.198.153.197
+               REMOTE_PATH: "/public_html/wp-content/themes/_themename"
+               LOCAL_PATH: 'production/*'
+    master:
+      - step:
+          name: Install node dependencies & Build
+          image: node:10.24.1
+          script:
+            - npm install
+            - npm link gulp
+            - npm link @babel/register
+            - npm link @babel/core
+            - npm link @babel/preset-env
+            - npm run build
+          artifacts:
+            - production/**
+      - step:
+         name: Deploy to production stage
+         deployment: staging
+         script:
+           - pipe: atlassian/sftp-deploy:0.5.11
+             variables:
+               USER: $SFTP_USERNAME_LIVE
+               PASSWORD: $SFTP_PASSWORD_LIVE
+               SERVER: 159.89.141.228
+               REMOTE_PATH: "/public_html/wp-content/themes/_themename"
+               LOCAL_PATH: 'production/*'
